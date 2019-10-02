@@ -87,30 +87,43 @@ namespace AutoRest.CodeModel
             {
                 Namespace = "AutoRest.CSharp.V3.PipelineModels",
                 HandleReferences = true,
-                GenerateOptionalPropertiesAsNullable = true,
+                //GenerateOptionalPropertiesAsNullable = true,
                 TypeAccessModifier = "internal"
             };
             var rawFile = new CSharpGenerator(schema, settings).GenerateFile();
             var cleanFile = String.Join(Environment.NewLine, rawFile.ToLines()
-                    .Where(l => !l.Contains("Newtonsoft.Json.JsonConverter") &&
-                                !l.Contains("Newtonsoft.Json.JsonExtensionData") &&
+                    .Where(l => //!l.Contains("Newtonsoft.Json.JsonConverter") &&
+                                //!l.Contains("Newtonsoft.Json.JsonExtensionData") &&
                                 !l.Contains("defaultProperties"))
                     .Select(l => Regex.Replace(l, @"(.*\[)Newtonsoft\.Json\.JsonProperty\((.*""),?.*(\)\])",
-                        "$1YamlDotNet.Serialization.YamlMember(Alias = $2$3", RegexOptions.Singleline).TrimEnd()))
+                        //"$1YamlDotNet.Serialization.YamlMember(Alias = $2$3", RegexOptions.Singleline).TrimEnd()))
+                        "$1System.Text.Json.Serialization.JsonPropertyName($2$3", RegexOptions.Singleline).TrimEnd()))
+
+
+                //[System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+
+
                 //.Select(l => Regex.Replace(l, @"(.*\[)Newtonsoft\.Json\.JsonProperty(.*""),?.*(\)\])",
                 //    "$1SharpYaml.Serialization.YamlMember$2$3", RegexOptions.Singleline).TrimEnd()))
                 //.Replace($"    {Environment.NewLine}    {Environment.NewLine}", String.Empty)
                 //.Replace($"    {Environment.NewLine}    }}", "    }")
                 //.Replace($"    {Environment.NewLine}", Environment.NewLine)
 
-                .Replace($"        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();{Environment.NewLine}{Environment.NewLine}        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties{Environment.NewLine}        {{{Environment.NewLine}            get {{ return _additionalProperties; }}{Environment.NewLine}            set {{ _additionalProperties = value; }}{Environment.NewLine}        }}{Environment.NewLine}", String.Empty)
+                .Replace("Newtonsoft.Json.JsonConverter", "System.Text.Json.Serialization.JsonConverter")
+                .Replace("Newtonsoft.Json.Converters.StringEnumConverter", "System.Text.Json.Serialization.JsonStringEnumConverter")
+                .Replace("Newtonsoft.Json.JsonExtensionData", "System.Text.Json.Serialization.JsonExtensionDataAttribute")
+                .Replace("<string, object>", "<string, System.Text.Json.JsonElement>")
+                .Replace("IDictionary", "Dictionary")
+                .Replace("public double", "public string")
+
+                //.Replace($"        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();{Environment.NewLine}{Environment.NewLine}        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties{Environment.NewLine}        {{{Environment.NewLine}            get {{ return _additionalProperties; }}{Environment.NewLine}            set {{ _additionalProperties = value; }}{Environment.NewLine}        }}{Environment.NewLine}", String.Empty)
                 //.Replace("class Languages", "class Languages : System.Collections.Generic.Dictionary<string, object>")
-                .Replace("class Protocols", "class Protocols : System.Collections.Generic.Dictionary<string, object>")
-                .Replace($"class Language{Environment.NewLine}", $"class Language : System.Collections.Generic.Dictionary<string, object>{Environment.NewLine}")
-                .Replace("class SerializationFormats", "class SerializationFormats : System.Collections.Generic.Dictionary<string, object>")
-                .Replace("class HTTPSecurityScheme", "class HTTPSecurityScheme : System.Collections.Generic.Dictionary<string, object>")
-                .Replace("class SecurityScheme", "class SecurityScheme : System.Collections.Generic.Dictionary<string, object>")
-                .Replace("class ExternalDocumentation", "class ExternalDocumentation : System.Collections.Generic.Dictionary<string, object>")
+                //.Replace("class Protocols", "class Protocols : System.Collections.Generic.Dictionary<string, object>")
+                //.Replace($"class Language{Environment.NewLine}", $"class Language : System.Collections.Generic.Dictionary<string, object>{Environment.NewLine}")
+                //.Replace("class SerializationFormats", "class SerializationFormats : System.Collections.Generic.Dictionary<string, object>")
+                //.Replace("class HTTPSecurityScheme", "class HTTPSecurityScheme : System.Collections.Generic.Dictionary<string, object>")
+                //.Replace("class SecurityScheme", "class SecurityScheme : System.Collections.Generic.Dictionary<string, object>")
+                //.Replace("class ExternalDocumentation", "class ExternalDocumentation : System.Collections.Generic.Dictionary<string, object>")
 
                 .Replace($"{Environment.NewLine}{Environment.NewLine}{Environment.NewLine}", Environment.NewLine)
                 .Replace($"{Environment.NewLine}{Environment.NewLine}    }}", $"{Environment.NewLine}    }}")

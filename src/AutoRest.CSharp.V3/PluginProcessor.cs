@@ -45,7 +45,8 @@ namespace AutoRest.CSharp.V3
                 //var serializer = new Serializer(settings);
                 //var cmClass = serializer.Deserialize<CodeModel>(codeModel);
 
-                var cmClass = CodeModelDeserializer.CreateCodeModel(codeModel);
+                //var cmClass = CodeModelDeserializer.CreateCodeModel(codeModel);
+                var cmClass = Deserializer2.CreateCodeModel(codeModel);
 
                 var inputFiles = await autoRest.GetValue<string[]>("input-file");
                 var inputFileMessage = new Message { Channel = Channel.Fatal, Text = inputFiles.FirstOrDefault() };

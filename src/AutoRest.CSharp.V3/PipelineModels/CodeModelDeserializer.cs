@@ -129,7 +129,7 @@ namespace AutoRest.CSharp.V3.PipelineModels
         //private static SerializerSettings SerializerSettings => _serializerSettings ??= new SerializerSettings().RegisterTagMapping(TagMap);
 
         private static DeserializerBuilder _deserializerBuilder;
-        private static DeserializerBuilder DeserializerBuilder => _deserializerBuilder ??= new DeserializerBuilder().RegisterTagMapping(TagMap);
+        public static DeserializerBuilder DeserializerBuilder => _deserializerBuilder ??= new DeserializerBuilder().RegisterTagMapping(TagMap);
 
         public static CodeModel CreateCodeModel(string yaml)
         {
