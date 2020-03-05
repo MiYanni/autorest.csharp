@@ -127,7 +127,7 @@ foreach ($directory in Get-ChildItem $testSwaggerPath -Directory)
     }
 }
 # Sample configuration
-$projectNames = 'AppConfiguration', 'CognitiveServices.TextAnalytics', 'CognitiveSearch', 'Azure.Storage.Tables'
+$projectNames = 'AppConfiguration', 'CognitiveServices.TextAnalytics', 'CognitiveSearch', 'Azure.Storage.Tables', 'Billing_Test', 'Dns_Test', 'Media_Test', 'Redis_Test'
 foreach ($projectName in $projectNames)
 {
     $projectDirectory = Join-Path $repoRoot 'samples' $projectName
